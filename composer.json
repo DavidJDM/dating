@@ -1,0 +1,12 @@
+{
+  "name": "dkovalev/it328/dating",
+  "authors": [
+    {
+      "name": "David Kovalevich",
+      "email": "kovalevichdavid@yahoo.com"
+    }
+  ],
+  "require": {
+    "bcosca/fatfree-core": "dev-master"
+  }
+}
