@@ -1,4 +1,9 @@
 <?php
+/**
+ * Name: David Kovalevich
+ * Date: 01/19/2019
+ * Fat Free Framework
+ */
 
 //Turn on error reporting
 ini_set('display_errors', 1);
@@ -15,8 +20,6 @@ $f3->set('DEBUG', 3);
 
 //Define a default route
 $f3->route('GET /', function() {
-    //echo '<h1>Howdy!</h1>';
-
     $view = new View;
     echo $view->render('views/home.html');
 });
