@@ -17,8 +17,6 @@ require ('vendor/autoload.php');
 
 session_start();
 
-require ('model/database.php');
-
 
 $database = new Database();
 
