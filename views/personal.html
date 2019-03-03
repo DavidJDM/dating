@@ -12,15 +12,15 @@
     <title>Personal Information</title>
 </head>
 
-<body>
-    <section class="container personal-main-content">
+<body class="bg-dark">
+    <section class="container personal-main-content bg-light">
         <form class="row" method="post" action="">
             <div class="header col-12">
                 <h1>Personal Information</h1>
                 <hr>
             </div>
 
-            <div class="col-9">
+            <div class="col-12 col-md-9">
                 <div class="form-group">
                     <label class="font-weight-bold" for="firstNameInput">First Name</label>
                     <input name="fname" class="form-control" id="firstNameInput" aria-describedby="firstNameInput" placeholder="Bob" required>
@@ -36,17 +36,17 @@
                     <input name="age" type="number" min="1" max="150" class="form-control" id="ageInput" aria-describedby="ageInput" placeholder="30" required>
                 </div>
 
-                <label class="font-weight-bold" for="genderCheck">Gender</label>
+                <label class="font-weight-bold">Gender</label>
 
                 <br>
 
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" value="Male" id="genderCheck">
+                    <input class="form-check-input" type="radio" name="gender" value="Male">
                     <label class="form-check-label mr-2">
                         Male
                     </label>
 
-                    <input class="form-check-input" type="radio" name="gender" value="Female" id="genderCheck">
+                    <input class="form-check-input" type="radio" name="gender" value="Female">
                     <label class="form-check-label">
                         Female
                     </label>
@@ -57,14 +57,23 @@
                     <label class="font-weight-bold" for="telInput">Phone Number</label>
                     <input type="tel" name="tel" class="form-control" id="telInput" aria-describedby="telInput" placeholder="253-433-3423" required>
                 </div>
+
+                <div class="form-group mt-3">
+                    <label class="font-weight-bold">Premium Membership</label>
+                    <div class="form-check">
+                        <input type="checkbox" name="premium" class="form-check-input" value="Premium Membership"> Sign me up for a Premium Account
+                    </div>
+                </div>
             </div>
 
-            <div class="col-3 text-right">
+            <div class="col-12 col-md-3 text-right">
                 <div class="note col-12 text-left">
                     <p>Note: All information entered is protected by our privacy policy. Profile information can only be viewed by others with our permission.</p>
                 </div>
-                <br><br><br><br><br><br><br><br><br>
-                <button type="submit" class="btn btn-primary">Next ></button>
+            </div>
+
+            <div class="col-md-12 mt-3">
+                <button class="btn btn-primary float-right" type="submit">Next ></button>
             </div>
         </form>
     </section>

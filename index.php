@@ -17,6 +17,17 @@ require ('vendor/autoload.php');
 
 session_start();
 
+require ('model/database.php');
+
+
+$database = new Database();
+
+//Sets class database into session variable
+$_SESSION['database'] = $database;
+
+//Connect to database
+$dbh = $database->connect();
+
 //Create an instance of the Base class
 $f3 = Base::instance();
 
@@ -43,7 +54,6 @@ $f3->route('GET /', function() {
 
 $f3->route('GET|POST /personal', function($f3) {
     $_SESSION = array();
-    print_r($_SESSION);
 
     if(!empty($_POST)) {
         $isValid = true;
@@ -75,7 +85,6 @@ $f3->route('GET|POST /personal', function($f3) {
 });
 
 $f3->route('GET|POST /profile', function($f3) {
-    print_r($_SESSION);
     if(!empty($_POST)) {
         $member = $_SESSION['member'];
 
@@ -107,7 +116,6 @@ $f3->route('GET|POST /profile', function($f3) {
 });
 
 $f3->route('GET|POST /interests', function($f3) {
-    print_r($_SESSION);
     if(!empty($_POST)) {
         $member = $_SESSION['member'];
         $indoorlist = "";
@@ -115,7 +123,7 @@ $f3->route('GET|POST /interests', function($f3) {
 
         if (!empty($_POST['indoor'])) {
             foreach ($_POST['indoor'] as $indoor) {
-                $indoorlist = $indoorlist . " " . $indoor;
+                $indoorlist = $indoorlist . $indoor . ", ";
             }
 
             $member->setInDoorInterests($indoorlist);
@@ -123,7 +131,7 @@ $f3->route('GET|POST /interests', function($f3) {
 
         if (!empty($_POST['outdoor'])) {
             foreach ($_POST['outdoor'] as $outdoor) {
-                $outdoorlist = $outdoorlist . " " . $outdoor;
+                $outdoorlist = $outdoorlist . $outdoor . ", ";
             }
 
             $member->setOutDoorInterests($outdoorlist);
@@ -142,8 +150,11 @@ $f3->route('GET|POST /interests', function($f3) {
 });
 
 $f3->route('GET|POST /summary', function($f3) {
-    print_r($_SESSION);
+
+    //classes
     $member = $_SESSION['member'];
+    $database = $_SESSION['database'];
+
     $f3->set('fname', $member->getFname());
     $f3->set('lname', $member->getLname());
     $f3->set('gender', $member->getGender());
@@ -153,13 +164,36 @@ $f3->route('GET|POST /summary', function($f3) {
     $f3->set('state', $member->getState());
     $f3->set('seeking', $member->getSeeking());
     $f3->set('biography', $member->getBio());
+
+    if($_SESSION['premium'] == false) {
+        $database->insertMember($member->getFname(), $member->getLname(), $member->getAge(), $member->getGender(), $member->getPhone(), $member->getEmail(), $member->getState(), $member->getSeeking(), $member->getBio(), 0, NULL, NULL);
+    }
+
     if($_SESSION['premium'] == true) {
-        $f3->set('interests', $member->getInDoorInterests() . " " . $member->getOutDoorInterests());
+        $f3->set('interests', $member->getInDoorInterests() . ", " . $member->getOutDoorInterests());
+        $database->insertMember($member->getFname(), $member->getLname(), $member->getAge(), $member->getGender(), $member->getPhone(), $member->getEmail(), $member->getState(), $member->getSeeking(), $member->getBio(), 1, NULL, $member->getInDoorInterests() . " " . $member->getOutDoorInterests());
     }
 
 
     $template = new Template();
     echo $template->render('views/summary.html');
+});
+
+$f3->route('GET|POST /admin', function ($f3) {
+    $database = $_SESSION['database'];
+    $members = $database->getMembers();
+    $f3->set('members', $members);
+
+    $view = new Template();
+    echo $view->render('views/admin.html');
+});
+
+$f3->route('GET|POST /displayMember@memberId', function($f3, $params) {
+    $database = $_SESSION['database'];
+    $member = $database->getMember($params['memberId']);
+    $f3->set('member', $member[0]); //Gets the info of the user with the specified ID
+    $view = new Template();
+    echo $view->render('views/displayMember.html');
 });
 
 
